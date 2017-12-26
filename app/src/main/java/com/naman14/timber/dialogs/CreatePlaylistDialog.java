@@ -1,9 +1,13 @@
 package com.naman14.timber.dialogs;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -11,10 +15,14 @@ import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.fragments.PlaylistFragment;
 import com.naman14.timber.models.Song;
 
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 /**
  * Created by naman on 20/12/15.
  */
 public class CreatePlaylistDialog extends DialogFragment {
+    private static final String TAG = "CreatePlaylistDialog";
 
     public static CreatePlaylistDialog newInstance() {
         return newInstance((Song) null);
@@ -45,6 +53,25 @@ public class CreatePlaylistDialog extends DialogFragment {
         return new MaterialDialog.Builder(getActivity()).positiveText("Create").negativeText("Cancel").input("Enter playlist name", "", false, new MaterialDialog.InputCallback() {
             @Override
             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+
+                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if(permissionCheck == PERMISSION_GRANTED){
+                    Log.v(TAG,"Permission Granted");
+                }
+                else if(permissionCheck == PERMISSION_DENIED){
+                    Log.v(TAG,"Permission Denied");
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            1024);
+                    Log.v(TAG,"Permission was requested");
+
+                }
+                else{
+                    Log.v(TAG,"IDK wtf is going on here");
+                }
+
 
                 long[] songs = getArguments().getLongArray("songs");
                 long playistId = MusicPlayer.createPlaylist(getActivity(), input.toString());
