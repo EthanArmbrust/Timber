@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,7 +165,11 @@ public class PlaylistPagerFragment extends Fragment {
                             songCountInt = lastAddedSongs.size();
                             songCountInt = lastAddedSongs.size();
                             for(Song song : lastAddedSongs){
-                                totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
+                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                }
+                                else
+                                    totalRuntime += song.duration;
                             }
 
                             if (songCountInt != 0) {
@@ -176,7 +181,11 @@ public class PlaylistPagerFragment extends Fragment {
                             List<Song> recentsongs = SongLoader.getSongsForCursor(TopTracksLoader.getCursor());
                             songCountInt = recentsongs.size();
                             for(Song song : recentsongs){
-                                totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
+                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                }
+                                else
+                                    totalRuntime += song.duration;
                             }
 
                             if (songCountInt != 0) {
@@ -188,7 +197,11 @@ public class PlaylistPagerFragment extends Fragment {
                             List<Song> topsongs = SongLoader.getSongsForCursor(TopTracksLoader.getCursor());
                             songCountInt = topsongs.size();
                             for(Song song : topsongs){
-                                totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
+                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
+                                }
+                                else
+                                    totalRuntime += song.duration;
                             }
                             if (songCountInt != 0) {
                                 firstAlbumID = topsongs.get(0).albumId;
