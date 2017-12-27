@@ -13,10 +13,8 @@
  */
 package com.naman14.timber.fragments;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -25,9 +23,7 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -35,7 +31,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +39,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.appthemeengine.ATE;
 import com.afollestad.appthemeengine.Config;
@@ -99,7 +93,6 @@ public class AlbumDetailFragment extends Fragment {
     private PreferencesUtility mPreferences;
     private Context context;
     private int primaryColor = -1;
-    private final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 
     public static AlbumDetailFragment newInstance(long id, boolean useTransition, String transitionName) {
         AlbumDetailFragment fragment = new AlbumDetailFragment();
@@ -324,14 +317,7 @@ public class AlbumDetailFragment extends Fragment {
                 MusicPlayer.addToQueue(context, mAdapter.getSongIds(), -1, TimberUtils.IdType.NA);
                 break;
             case R.id.popup_song_addto_playlist:
-                String[] permissions = new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    AddPlaylistDialog.newInstance(mAdapter.getSongIds()).show(mContext.getSupportFragmentManager(), "ADD_PLAYLIST");
-                    //ActivityCompat.requestPermissions(getActivity(), permissions, MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
-                }
-                else{
-                    requestWritePermission();
-                }
+                AddPlaylistDialog.newInstance(mAdapter.getSongIds()).show(mContext.getSupportFragmentManager(), "ADD_PLAYLIST");
                 break;
             case R.id.menu_sort_by_az:
                 mPreferences.setAlbumSongSortOrder(SortOrder.AlbumSongSortOrder.SONG_A_Z);
@@ -355,36 +341,6 @@ public class AlbumDetailFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    void requestWritePermission(){
-            // Request the permission. The result will be received in onRequestPermissionResult().
-
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
-
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.v("AlbumDetailFragment", "permissions allowed, adding songs");
-
-                    AddPlaylistDialog.newInstance(mAdapter.getSongIds()).show(mContext.getSupportFragmentManager(), "ADD_PLAYLIST");
-
-                } else {
-
-                    Toast.makeText(context, "Permission was denied", Toast.LENGTH_LONG);
-                }
-                return;
-            }
-        }
     }
 
     @Override
