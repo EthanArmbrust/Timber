@@ -20,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,15 +162,9 @@ public class PlaylistPagerFragment extends Fragment {
                         case 0:
                             List<Song> lastAddedSongs = LastAddedLoader.getLastAddedSongs(getActivity());
                             songCountInt = lastAddedSongs.size();
-                            songCountInt = lastAddedSongs.size();
-                            for(Song song : lastAddedSongs){
-                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
-                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
-                                }
-                                else
-                                    totalRuntime += song.duration;
+                            for(Song song : lastAddedSongs) {
+                                totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
                             }
-
                             if (songCountInt != 0) {
                                 firstAlbumID = lastAddedSongs.get(0).albumId;
                                 return TimberUtils.getAlbumArtUri(firstAlbumID).toString();
@@ -181,11 +174,7 @@ public class PlaylistPagerFragment extends Fragment {
                             List<Song> recentsongs = SongLoader.getSongsForCursor(TopTracksLoader.getCursor());
                             songCountInt = recentsongs.size();
                             for(Song song : recentsongs){
-                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
-                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
-                                }
-                                else
-                                    totalRuntime += song.duration;
+                                    totalRuntime += song.duration / 1000;
                             }
 
                             if (songCountInt != 0) {
@@ -197,11 +186,7 @@ public class PlaylistPagerFragment extends Fragment {
                             List<Song> topsongs = SongLoader.getSongsForCursor(TopTracksLoader.getCursor());
                             songCountInt = topsongs.size();
                             for(Song song : topsongs){
-                                if(getPlaylistType() != Constants.NAVIGATE_PLAYLIST_USERCREATED) {
-                                    totalRuntime += song.duration / 1000; //for some reason default playlists have songs with durations 1000x larger than they should be
-                                }
-                                else
-                                    totalRuntime += song.duration;
+                                    totalRuntime += song.duration / 1000;
                             }
                             if (songCountInt != 0) {
                                 firstAlbumID = topsongs.get(0).albumId;
@@ -222,7 +207,9 @@ public class PlaylistPagerFragment extends Fragment {
                 } else {
                     List<Song> playlistsongs = PlaylistSongLoader.getSongsInPlaylist(getActivity(), playlist.id);
                     songCountInt = playlistsongs.size();
-
+                    for(Song song : playlistsongs){
+                        totalRuntime += song.duration;
+                    }
                     if (songCountInt != 0) {
                         firstAlbumID = playlistsongs.get(0).albumId;
                         return TimberUtils.getAlbumArtUri(firstAlbumID).toString();
@@ -244,24 +231,11 @@ public class PlaylistPagerFragment extends Fragment {
                         }
                     });
             songcount.setText(" " + String.valueOf(songCountInt) + " " + mContext.getString(R.string.songs));
-            runtime.setText(" " + secondsToClockTime(totalRuntime));
+            runtime.setText(" " + TimberUtils.makeShortTimeString(mContext, totalRuntime));
         }
 
         @Override
         protected void onPreExecute() {
-        }
-
-        //takes number of seconds and converts to HH:MM:SS format
-        String secondsToClockTime(int seconds){
-            int hours = seconds / 3600;
-            int minutes = (seconds - (hours * 3600)) / 60;
-            int remainingSeconds = (seconds - (hours * 3600)) - (minutes * 60);
-
-            if(hours == 0){
-                return String.valueOf(minutes) + ":" + String.format("%02d", remainingSeconds);
-            }
-            else
-                return String.valueOf(hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", remainingSeconds);
         }
     }
 
