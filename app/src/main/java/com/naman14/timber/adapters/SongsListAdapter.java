@@ -221,6 +221,7 @@ public class SongsListAdapter extends BaseSongAdapter<SongsListAdapter.ItemHolde
         }
     }
 
+    @Override
     public void updateDataSet(List<Song> arraylist) {
         this.arraylist = arraylist;
         this.songIDs = getSongIds();
@@ -274,8 +275,10 @@ public class SongsListAdapter extends BaseSongAdapter<SongsListAdapter.ItemHolde
         arraylist.add(i, song);
     }
 
+    @Override
     public void removeSongAt(int i) {
         arraylist.remove(i);
+        updateDataSet(arraylist);
     }
 }
 

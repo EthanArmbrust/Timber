@@ -191,6 +191,8 @@ public class ArtistSongAdapter extends BaseSongAdapter<ArtistSongAdapter.ItemHol
         return viewType;
     }
 
+
+
     public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView title, album;
         protected ImageView albumArt, menu;
