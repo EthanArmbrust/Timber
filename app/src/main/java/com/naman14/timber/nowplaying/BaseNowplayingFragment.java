@@ -99,15 +99,15 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                     elapsedtime.setText(TimberUtils.makeShortTimeString(getActivity(), position / 1000));
             }
             overflowcounter--;
-            if (MusicPlayer.isPlaying()) {
-                int delay = (int) (1500 - (position % 1000));
+            //if (MusicPlayer.isPlaying()) {
+                int delay = (int) (1500 - (position % 1000)); //not sure why this delay is so high
                 if (overflowcounter < 0 && !fragmentPaused) {
                     overflowcounter++;
-                    mProgress.postDelayed(mUpdateProgress, delay);
+                    mProgress.postDelayed(mUpdateProgress, 250); //delay
                 }
-            }
+           }
 
-        }
+        //}
     };
     CircularSeekBar mCircularProgress;
     //circular seekbar

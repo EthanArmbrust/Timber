@@ -137,7 +137,7 @@ public class MusicService extends Service {
     public static final int REPEAT_ALL = 2;
     public static final int MAX_HISTORY_SIZE = 1000;
     private static final String TAG = "MusicPlaybackService";
-    private static final boolean D = false;
+    private static final boolean D = true;
     private static final String SHUTDOWN = "com.naman14.timber.shutdown";
     private static final int IDCOLIDX = 0;
     private static final int TRACK_ENDED = 1;
@@ -235,6 +235,7 @@ public class MusicService extends Service {
     private boolean mActivateXTrackSelector;
     private SongPlayCount mSongPlayCount;
     private RecentStore mRecentStore;
+    private Receiver mReceiver;
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 
         @Override
@@ -283,7 +284,7 @@ public class MusicService extends Service {
 
     @Override
     public void onCreate() {
-        if (D) Log.d(TAG, "Creating service");
+        /*if (D)*/ Log.d(TAG, "Creating service");
         super.onCreate();
 
         mNotificationManager = NotificationManagerCompat.from(this);
@@ -338,7 +339,7 @@ public class MusicService extends Service {
         registerReceiver(mIntentReceiver, filter);
 
 
-        Receiver mReceiver = new Receiver();
+        mReceiver = new Receiver();
         registerReceiver(mReceiver, filter);
 
         mMediaStoreObserver = new MediaStoreObserver(mPlayerHandler);
@@ -438,7 +439,7 @@ public class MusicService extends Service {
 
     @Override
     public void onDestroy() {
-        if (D) Log.d(TAG, "Destroying service");
+        /*if (D)*/ Log.d(TAG, "Destroying service");
         super.onDestroy();
         //Try to push LastFMCache
         if (LastfmUserSession.getSession(this).isLogedin()) {
@@ -460,8 +461,8 @@ public class MusicService extends Service {
             mHandlerThread.quitSafely();
         else mHandlerThread.quit();
 
-        mPlayer.release();
-        mPlayer = null;
+        //mPlayer.release();
+        //mPlayer = null;
 
         mAudioManager.abandonAudioFocus(mAudioFocusListener);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -475,6 +476,11 @@ public class MusicService extends Service {
         if (mUnmountReceiver != null) {
             unregisterReceiver(mUnmountReceiver);
             mUnmountReceiver = null;
+        }
+
+        if(mReceiver != null){
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
         }
 
         mWakeLock.release();
