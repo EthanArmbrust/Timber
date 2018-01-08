@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.util.Log;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
@@ -36,6 +37,7 @@ import com.naman14.timber.utils.TimberUtils;
 import java.util.List;
 
 public class AlbumSongsAdapter extends BaseSongAdapter<AlbumSongsAdapter.ItemHolder> {
+    private static final String TAG = "AlbumSongsAdapter";
 
     private List<Song> arraylist;
     private Activity mContext;
@@ -82,12 +84,16 @@ public class AlbumSongsAdapter extends BaseSongAdapter<AlbumSongsAdapter.ItemHol
             @Override
             public void onClick(View v) {
 
+
+
                 final PopupMenu menu = new PopupMenu(mContext, v);
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
                         switch (item.getItemId()) {
                             case R.id.popup_song_play:
+
                                 MusicPlayer.playAll(mContext, songIDs, position, -1, TimberUtils.IdType.NA, false);
                                 break;
                             case R.id.popup_song_play_next:
@@ -140,9 +146,15 @@ public class AlbumSongsAdapter extends BaseSongAdapter<AlbumSongsAdapter.ItemHol
         return ret;
     }
 
+    @Override
     public void updateDataSet(List<Song> arraylist) {
         this.arraylist = arraylist;
         this.songIDs = getSongIds();
+    }
+
+    @Override
+    public void removeSongAt(int i){
+        arraylist.remove(i);
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
