@@ -235,7 +235,6 @@ public class MusicService extends Service {
     private boolean mActivateXTrackSelector;
     private SongPlayCount mSongPlayCount;
     private RecentStore mRecentStore;
-    private Receiver mReceiver;
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 
         @Override
@@ -472,11 +471,6 @@ public class MusicService extends Service {
         if (mUnmountReceiver != null) {
             unregisterReceiver(mUnmountReceiver);
             mUnmountReceiver = null;
-        }
-
-        if(mReceiver != null){
-            unregisterReceiver(mReceiver);
-            mReceiver = null;
         }
 
         mWakeLock.release();
