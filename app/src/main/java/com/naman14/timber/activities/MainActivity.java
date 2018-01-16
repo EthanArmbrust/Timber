@@ -82,6 +82,8 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
     private Map<String, Runnable> navigationMap = new HashMap<String, Runnable>();
     private Handler navDrawerRunnable = new Handler();
     private Runnable runnable;
+    private DrawerLayout mDrawerLayout;
+    private boolean isDarkTheme;
 
     private Runnable navigateLibrary = new Runnable() {
         public void run() {
@@ -90,13 +92,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
 
-        }
-    };
-
-    private Runnable navigateNowplaying = new Runnable() {
-        public void run() {
-            navigateLibrary.run();
-            startActivity(new Intent(MainActivity.this, NowPlayingActivity.class));
         }
     };
 
@@ -162,8 +157,12 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
         }
     };
 
-    private DrawerLayout mDrawerLayout;
-    private boolean isDarkTheme;
+    private Runnable navigateNowplaying = new Runnable() {
+        public void run() {
+            navigateLibrary.run();
+            startActivity(new Intent(MainActivity.this, NowPlayingActivity.class));
+        }
+    };
 
     private final PermissionCallback permissionReadstorageCallback = new PermissionCallback() {
         @Override
@@ -176,7 +175,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
             finish();
         }
     };
-
 
 
     @Override
@@ -220,6 +218,7 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
 
         if (TimberUtils.isMarshmallow()) {
             checkPermissionAndThenLoad();
+            //checkWritePermissions();
         } else {
             loadEverything();
         }
@@ -277,7 +276,7 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
 
     private void checkPermissionAndThenLoad() {
         //check for permission
-        if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && Nammu.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             loadEverything();
         } else {
             if (Nammu.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -286,14 +285,15 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
                         .setAction("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Nammu.askForPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE, permissionReadstorageCallback);
+                                Nammu.askForPermission(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionReadstorageCallback);
                             }
                         }).show();
             } else {
-                Nammu.askForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE, permissionReadstorageCallback);
+                Nammu.askForPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionReadstorageCallback);
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -160,8 +160,6 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
     @Override
     protected void onStop() {
         super.onStop();
-
-
     }
 
     @Override
@@ -169,6 +167,10 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
         if (playServicesAvailable) {
             mCastSession = mSessionManager.getCurrentCastSession();
             mSessionManager.addSessionManagerListener(mSessionManagerListener);
+        }
+        //For Android 8.0+: service may get destroyed if in background too long
+        if(mService == null){
+            mToken = MusicPlayer.bindToService(this, this);
         }
         onMetaChanged();
         super.onResume();
@@ -186,7 +188,6 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
     @Override
     public void onServiceConnected(final ComponentName name, final IBinder service) {
         mService = ITimberService.Stub.asInterface(service);
-
         onMetaChanged();
     }
 
