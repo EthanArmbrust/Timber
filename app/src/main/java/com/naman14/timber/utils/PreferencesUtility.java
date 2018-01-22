@@ -246,7 +246,9 @@ public final class PreferencesUtility {
     }
 
     public boolean fullUnlocked() {
-        return mPreferences.getBoolean(FULL_UNLOCKED, false);
+        return true;
+        //return mPreferences.getBoolean(FULL_UNLOCKED, true);
+        //return mPreferences.getBoolean(FULL_UNLOCKED, false);
     }
 
     public void setFullUnlocked(final boolean b) {
