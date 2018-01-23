@@ -75,7 +75,6 @@
                         android:marqueeRepeatLimit="marquee_forever"
                         android:scrollHorizontally="true"
                         android:singleLine="true"
-                        android:text="It Aint Hard To Tell I Excel and Prev"
                         android:textSize="16sp" />
 
                     <TextView
@@ -86,7 +85,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Song Artist"
                         android:paddingTop="3dp"
 
                         android:textSize="14sp" />
