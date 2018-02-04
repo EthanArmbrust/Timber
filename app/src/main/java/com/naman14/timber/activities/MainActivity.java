@@ -312,15 +312,13 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
         if(currentFragment instanceof QueueFragment){
             MenuItem item = menu.findItem(R.id.action_open_queue);
             item.setVisible(false);
-            MenuItem clearQueue = menu.findItem(R.id.action_clear_queue);
-            clearQueue.setVisible(true);
+            menu.findItem(R.id.action_clear_queue).setVisible(true);
         }
         else{
             MenuItem item = menu.findItem(R.id.action_open_queue);
             item.setVisible(true);
-            MenuItem clearQueue = menu.findItem(R.id.action_clear_queue);
-            clearQueue.setVisible(false);
         }
+
         return true;
     }
 
