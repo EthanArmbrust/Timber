@@ -243,6 +243,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.now_playing, menu);
+        //menu.findItem(R.id.action_clear_queue).setVisible(false);
     }
 
     @Override
@@ -547,16 +548,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             }
             if (songtitle != null && MusicPlayer.getTrackName() != null) {
                     songtitle.setText(MusicPlayer.getTrackName());
-                    if(MusicPlayer.getTrackName().length() <= 23){
-                        songtitle.setTextSize(25);
-                    }
-                    else if(MusicPlayer.getTrackName().length() >= 30){
-                        songtitle.setTextSize(18);
-                    }
-                    else{
-                        songtitle.setTextSize(18 + (MusicPlayer.getTrackName().length() - 24));
-                    }
-                    Log.v("BaseNowPlayingFrag", "Title Text Size: " + songtitle.getTextSize());
+
             }
             if (songartist != null) {
                 songartist.setText(MusicPlayer.getArtistName());

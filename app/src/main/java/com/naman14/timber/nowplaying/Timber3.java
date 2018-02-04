@@ -18,15 +18,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 
 public class Timber3 extends BaseNowplayingFragment {
+
+    private TextView songtitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(
                 R.layout.fragment_timber3, container, false);
+        songtitle = (TextView) rootView.findViewById(R.id.song_title);
 
         setMusicStateListener();
         setSongDetails(rootView);
@@ -34,6 +39,20 @@ public class Timber3 extends BaseNowplayingFragment {
         initGestures(rootView.findViewById(R.id.album_art));
 
         return rootView;
+    }
+
+    @Override
+    public void updateSongDetails(){
+        super.updateSongDetails();
+        if(MusicPlayer.getTrackName().length() <= 23){
+            songtitle.setTextSize(25);
+        }
+        else if(MusicPlayer.getTrackName().length() >= 30){
+            songtitle.setTextSize(18);
+        }
+        else{
+            songtitle.setTextSize(18 + (MusicPlayer.getTrackName().length() - 24));
+        }
     }
 
 }
