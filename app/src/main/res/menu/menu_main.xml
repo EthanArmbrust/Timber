@@ -2,6 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
+    <item android:id="@+id/action_clear_queue" android:title="Clear queue"
+        android:orderInCategory="9" app:showAsAction="never" />
+
     <item android:id="@+id/action_shuffle" android:title="@string/action_shuffle_all"
         android:orderInCategory="10" app:showAsAction="never" />
 

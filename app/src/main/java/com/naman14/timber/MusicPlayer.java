@@ -157,6 +157,16 @@ public class MusicPlayer {
         }
     }
 
+    public static void stop(){
+        if(mService != null){
+            try {
+                mService.stop();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void cycleShuffle() {
         try {
             if (mService != null) {

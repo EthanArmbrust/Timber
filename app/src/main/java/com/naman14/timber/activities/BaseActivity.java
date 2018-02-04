@@ -218,6 +218,13 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
         mMusicStateListener.clear();
     }
 
+    public void destroyService(){
+        if (mToken != null) {
+            MusicPlayer.unbindFromService(mToken);
+            mToken = null;
+        }
+    }
+
     @Override
     public void onMetaChanged() {
         // Let the listener know to the meta chnaged

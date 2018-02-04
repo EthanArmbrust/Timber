@@ -789,6 +789,10 @@ public class MusicService extends Service {
         }
     }
 
+    public void cancelNot(){
+        releaseServiceUiAndStop();
+    }
+
     private void addToPlayList(final long[] list, int position, long sourceId, TimberUtils.IdType sourceType) {
         final int addlen = list.length;
         if (position < 0) {

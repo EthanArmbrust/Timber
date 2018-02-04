@@ -91,6 +91,16 @@ public class QueueFragment extends Fragment implements MusicStateListener {
             mAdapter.notifyDataSetChanged();
     }
 
+    public void clearQueue(){
+        if(mAdapter != null){
+            while(mAdapter.getItemCount() > 0){
+                mAdapter.removeSongAt(0);
+                mAdapter.notifyItemRemoved(0);
+                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
+            }
+        }
+    }
+
     private class loadQueueSongs extends AsyncTask<String, Void, String> {
 
         @Override

@@ -312,10 +312,14 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
         if(currentFragment instanceof QueueFragment){
             MenuItem item = menu.findItem(R.id.action_open_queue);
             item.setVisible(false);
+            MenuItem clearQueue = menu.findItem(R.id.action_clear_queue);
+            clearQueue.setVisible(true);
         }
         else{
             MenuItem item = menu.findItem(R.id.action_open_queue);
             item.setVisible(true);
+            MenuItem clearQueue = menu.findItem(R.id.action_clear_queue);
+            clearQueue.setVisible(false);
         }
         return true;
     }
@@ -329,6 +333,18 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
                 } else super.onBackPressed();
                 return true;
             }
+            case R.id.action_clear_queue:
+                if(MusicPlayer.isPlaying()){
+                    MusicPlayer.playOrPause();
+                }
+                MusicPlayer.clearQueue();
+                MusicPlayer.stop();
+                super.destroyService();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if(currentFragment instanceof QueueFragment){
+                    ((QueueFragment) currentFragment).clearQueue();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
