@@ -42,7 +42,7 @@ public class Timber5 extends BaseNowplayingFragment {
         setSongDetails(rootView);
 
         mBlurredArt = (ImageView) rootView.findViewById(R.id.album_art_blurred);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.queue_recyclerview_horizontal) ;
+        //recyclerView = (RecyclerView) rootView.findViewById(R.id.queue_recyclerview_horizontal) ;
         initGestures(mBlurredArt);
         setupSlidingQueue();
 
@@ -112,10 +112,10 @@ public class Timber5 extends BaseNowplayingFragment {
     }
 
     private void setupSlidingQueue() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new SlidingQueueAdapter((AppCompatActivity) getActivity(), QueueLoader.getQueueSongs(getActivity()));
-        recyclerView.setAdapter(adapter);
-        recyclerView.scrollToPosition(MusicPlayer.getQueuePosition() - 3);
+        //recyclerView.setAdapter(adapter);
+        //recyclerView.scrollToPosition(MusicPlayer.getQueuePosition() - 3);
     }
 
 
