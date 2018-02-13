@@ -68,6 +68,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
 import java.util.List;
+import java.util.Random;
 
 public class AlbumDetailFragment extends Fragment {
 
@@ -303,6 +304,7 @@ public class AlbumDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.album_detail, menu);
+        menu.findItem(R.id.action_shuffle).setVisible(false);
         if (getActivity() != null)
             ATE.applyMenu(getActivity(), "dark_theme", menu);
     }
@@ -318,6 +320,11 @@ public class AlbumDetailFragment extends Fragment {
                 break;
             case R.id.popup_song_addto_playlist:
                 AddPlaylistDialog.newInstance(mAdapter.getSongIds()).show(mContext.getSupportFragmentManager(), "ADD_PLAYLIST");
+                break;
+            case R.id.shuffle_album:
+                Random random = new Random();
+                int position = random.nextInt(mAdapter.getItemCount() + 1);
+                MusicPlayer.playAll(getContext(), mAdapter.getSongIds(), position, -1, TimberUtils.IdType.NA, true);
                 break;
             case R.id.menu_sort_by_az:
                 mPreferences.setAlbumSongSortOrder(SortOrder.AlbumSongSortOrder.SONG_A_Z);

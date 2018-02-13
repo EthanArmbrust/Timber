@@ -58,6 +58,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.List;
+import java.util.Random;
 
 public class ArtistDetailFragment extends Fragment {
 
@@ -211,6 +212,7 @@ public class ArtistDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.artist_detail, menu);
+        menu.findItem(R.id.action_shuffle).setVisible(false);
         if (getActivity() != null)
             ATE.applyMenu(getActivity(), "dark_theme", menu);
     }
@@ -223,6 +225,10 @@ public class ArtistDetailFragment extends Fragment {
             case R.id.popup_song_addto_playlist:
                 AddPlaylistDialog.newInstance(mAdapter.getSongIds()).show(getActivity().getSupportFragmentManager(), "ADD_PLAYLIST");
                 break;
+            case R.id.shuffle_artist:
+                Random random = new Random();
+                int position = random.nextInt(mAdapter.getItemCount() + 1);
+                MusicPlayer.playAll(getContext(), mAdapter.getSongIds(), position, -1, TimberUtils.IdType.NA, true);
         }
         return super.onOptionsItemSelected(item);
     }

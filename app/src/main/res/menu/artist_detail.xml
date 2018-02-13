@@ -6,4 +6,7 @@
     <item
         android:id="@+id/popup_song_addto_playlist"
         android:title="@string/add_to_playlist"/>
+    <item
+        android:id="@+id/shuffle_artist"
+        android:title="Shuffle artist"/>
 </menu>

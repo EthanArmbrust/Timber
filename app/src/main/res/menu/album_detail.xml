@@ -10,6 +10,9 @@
         android:id="@+id/popup_song_addto_playlist"
         android:title="@string/add_to_playlist" />
     <item
+        android:id="@+id/shuffle_album"
+        android:title="Shuffle album" />
+    <item
         android:id="@+id/menu_sort_by"
         android:showAsAction="never"
         android:orderInCategory="50"
