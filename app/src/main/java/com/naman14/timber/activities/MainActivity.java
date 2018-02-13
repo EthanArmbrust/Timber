@@ -346,6 +346,18 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
                     panelLayout.hidePanel();
                 }
                 break;
+            case R.id.action_open_queue:
+                runnable = navigateQueue;
+                if (runnable != null) {
+                    mDrawerLayout.closeDrawers();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            runnable.run();
+                        }
+                    }, 350);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -358,6 +370,14 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(panelLayout != null && MusicPlayer.getTrackName() == null){
+            panelLayout.hidePanel();
         }
     }
 

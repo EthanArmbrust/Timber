@@ -313,8 +313,11 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
                 NavigationUtils.navigateToSearch(this);
                 return true;
             case R.id.action_open_queue:
-                NavigationUtils.goToQueue(this);
+                if(!(this instanceof MainActivity)) {
+                    NavigationUtils.goToQueue(this);
+                }
                 return true;
+
             case R.id.action_equalizer:
                 NavigationUtils.navigateToEqualizer(this);
                 return true;
