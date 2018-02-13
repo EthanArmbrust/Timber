@@ -342,6 +342,9 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
                 if(currentFragment instanceof QueueFragment){
                     ((QueueFragment) currentFragment).clearQueue();
                 }
+                if(panelLayout != null){
+                    panelLayout.hidePanel();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
