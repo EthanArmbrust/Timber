@@ -537,7 +537,7 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
 
     @Override
     public int getActivityTheme() {
-        return isDarkTheme ? R.style.AppThemeNormalDark : R.style.AppThemeNormalLight;
+        return isDarkTheme ? R.style.AppThemeNormalBlack : R.style.AppThemeNormalLight;
     }
 
     @Override
