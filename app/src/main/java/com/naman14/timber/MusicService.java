@@ -84,6 +84,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
@@ -217,6 +218,7 @@ public class MusicService extends Service {
     private int mServiceStartId = -1;
 
     private ArrayList<MusicPlaybackTrack> mPlaylist = new ArrayList<MusicPlaybackTrack>(100);
+    private ArrayList<MusicPlaybackTrack> mOriginalPlaylist = new ArrayList<MusicPlaybackTrack>(100);
 
     private long[] mAutoShuffleList = null;
 
@@ -808,6 +810,7 @@ public class MusicService extends Service {
 
         mPlaylist.addAll(position, arrayList);
 
+
         if (mPlaylist.size() == 0) {
             closeCursor();
             notifyChange(META_CHANGED);
@@ -939,7 +942,7 @@ public class MusicService extends Service {
                 return 0;
             }
             return mPlayPos;
-        } else if (mShuffleMode == SHUFFLE_NORMAL) {
+        } /*else if (mShuffleMode == SHUFFLE_NORMAL) {
             final int numTracks = mPlaylist.size();
 
 
@@ -996,7 +999,7 @@ public class MusicService extends Service {
         } else if (mShuffleMode == SHUFFLE_AUTO) {
             doAutoShuffleUpdate();
             return mPlayPos + 1;
-        } else {
+        }*/ else {
             if (mPlayPos >= mPlaylist.size() - 1) {
                 if (mRepeatMode == REPEAT_NONE && !force) {
                     return -1;
@@ -1583,6 +1586,31 @@ public class MusicService extends Service {
             }
 
             mShuffleMode = shufflemode;
+
+            if(mShuffleMode == MusicService.SHUFFLE_NONE){
+                long current = getCurrentTrack().mId;
+                mPlaylist = new ArrayList(mOriginalPlaylist);
+                for(int i = 0; i < mPlaylist.size(); i++){
+                    MusicPlaybackTrack bob = mPlaylist.get(i);
+                    if(bob.mId == current){
+                        mPlayPos = i;
+                        break;
+                    }
+                }
+                //mPlayPos = 5;//mOriginalPlaylist.indexOf(MusicPlayer.getCurrentTrack());
+                Log.d("MusicService","unshuffle new position: " + mPlayPos);
+            }
+            if(mShuffleMode == MusicService.SHUFFLE_NORMAL) {
+                mOriginalPlaylist = new ArrayList(mPlaylist);
+                int index = getQueuePosition();//mPlaylist.indexOf(MusicPlayer.getCurrentTrack());
+                MusicPlaybackTrack current = mPlaylist.remove(index);
+                Collections.shuffle(mPlaylist);
+                mPlaylist.add(0,current);
+                mPlayPos = 0;
+
+
+            }
+
             if (mShuffleMode == SHUFFLE_AUTO) {
                 if (makeAutoShuffleList()) {
                     mPlaylist.clear();
@@ -1931,6 +1959,8 @@ public class MusicService extends Service {
             if (mShuffleMode == SHUFFLE_AUTO) {
                 mShuffleMode = SHUFFLE_NORMAL;
             }
+            mOriginalPlaylist = new ArrayList(mPlaylist);
+            setShuffleMode(mShuffleMode);
             final long oldId = getAudioId();
             final int listlength = list.length;
             boolean newlist = true;
