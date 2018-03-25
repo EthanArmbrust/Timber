@@ -1959,8 +1959,8 @@ public class MusicService extends Service {
             if (mShuffleMode == SHUFFLE_AUTO) {
                 mShuffleMode = SHUFFLE_NORMAL;
             }
-            mOriginalPlaylist = new ArrayList(mPlaylist);
-            setShuffleMode(mShuffleMode);
+            //mOriginalPlaylist = new ArrayList(mPlaylist);
+            //setShuffleMode(mShuffleMode);
             final long oldId = getAudioId();
             final int listlength = list.length;
             boolean newlist = true;
